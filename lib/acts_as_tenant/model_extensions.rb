@@ -168,13 +168,11 @@ module ActsAsTenant
         to_include = Module.new do
           define_method "#{fkey}=" do |integer|
             write_attribute("#{fkey}", integer)
-            raise ActsAsTenant::Errors::TenantIsImmutable if send("#{fkey}_changed?") && persisted? && !send("#{fkey}_was").nil?
             integer
           end
 
           define_method "#{ActsAsTenant.tenant_klass.to_s}=" do |model|
             super(model)
-            raise ActsAsTenant::Errors::TenantIsImmutable if send("#{fkey}_changed?") && persisted? && !send("#{fkey}_was").nil?
             model
           end
 
